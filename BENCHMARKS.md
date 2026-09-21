@@ -29,7 +29,7 @@ _Fill in as you complete each step:_
 | Multi-stage build — cold build time | ~100 s |
 | Warm rebuild (one-line code change) | ~52 s (CACHED confirmed) |
 | p99 — bare metal (Lab 2, no container) | 38 ms |
-| p99 — containerised | N/A (hey tool install failed) |
+| p99 — containerised | 96 ms (custom Python load test, hey unavailable) |
 | Time-to-ready (`scripts/startup_time.sh`) | ~0-7 s (already warm) |
 
 ## Day 2 — Lab 4 (Tests)
