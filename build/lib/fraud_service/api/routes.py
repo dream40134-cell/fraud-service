@@ -17,7 +17,7 @@ router = APIRouter()
 def get_scorer(request: Request) -> FraudScorer:
     scorer = getattr(request.app.state, "scorer", None)
     if scorer is None:
-        raise HTTPException(status_code=503, detail="Model not ready yet",
+        raise HTTPException(status_code=503, detail="Model not ready",
                              headers={"Retry-After": "5"})
     return scorer
 

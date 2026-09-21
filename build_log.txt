@@ -1,0 +1,65 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.31kB 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim
+#2 DONE 0.9s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 217B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 1.54kB done
+#4 DONE 0.0s
+
+#5 [builder 1/8] FROM docker.io/library/python:3.12-slim@sha256:2f17fc044b579bab302c2e8054d3a686e2cb9a83de48e70534b94cd8ebbe06a9
+#5 resolve docker.io/library/python:3.12-slim@sha256:2f17fc044b579bab302c2e8054d3a686e2cb9a83de48e70534b94cd8ebbe06a9 0.0s done
+#5 DONE 0.0s
+
+#6 [runtime 3/6] RUN apt-get update && apt-get install -y     --no-install-recommends curl     && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [runtime 2/6] RUN useradd --create-home --uid 10001 appuser
+#7 CACHED
+
+#8 [runtime 4/6] WORKDIR /app
+#8 CACHED
+
+#9 [builder 2/8] RUN apt-get update && apt-get install -y     --no-install-recommends build-essential     && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [builder 3/8] WORKDIR /app
+#10 CACHED
+
+#11 [builder 4/8] COPY requirements.lock .
+#11 CACHED
+
+#12 [builder 5/8] RUN python -m venv /opt/venv     && /opt/venv/bin/pip install --no-cache-dir     -r requirements.lock
+#12 3.614 Processing /Users/dream.dm/Downloads/fraud-service 4 (from -r requirements.lock (line 15))
+#12 3.615 ERROR: Could not install packages due to an OSError: [Errno 2] No such file or directory: '/Users/dream.dm/Downloads/fraud-service 4'
+#12 3.615 
+#12 4.292 
+#12 4.292 [notice] A new release of pip is available: 25.0.1 -> 26.2.1
+#12 4.292 [notice] To update, run: python -m pip install --upgrade pip
+#12 ERROR: process "/bin/sh -c python -m venv /opt/venv     && /opt/venv/bin/pip install --no-cache-dir     -r requirements.lock" did not complete successfully: exit code: 1
+------
+ > [builder 5/8] RUN python -m venv /opt/venv     && /opt/venv/bin/pip install --no-cache-dir     -r requirements.lock:
+3.614 Processing /Users/dream.dm/Downloads/fraud-service 4 (from -r requirements.lock (line 15))
+3.615 ERROR: Could not install packages due to an OSError: [Errno 2] No such file or directory: '/Users/dream.dm/Downloads/fraud-service 4'
+3.615 
+4.292 
+4.292 [notice] A new release of pip is available: 25.0.1 -> 26.2.1
+4.292 [notice] To update, run: python -m pip install --upgrade pip
+------
+Dockerfile:12
+--------------------
+  11 |     COPY requirements.lock .
+  12 | >>> RUN python -m venv /opt/venv \
+  13 | >>>     && /opt/venv/bin/pip install --no-cache-dir \
+  14 | >>>     -r requirements.lock
+  15 |     
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c python -m venv /opt/venv     && /opt/venv/bin/pip install --no-cache-dir     -r requirements.lock" did not complete successfully: exit code: 1
