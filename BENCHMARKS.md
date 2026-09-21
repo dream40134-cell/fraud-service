@@ -23,14 +23,14 @@ _Fill in as you complete each step:_
 
 | Metric | Value |
 |---|---|
-| Naive build — image size | |
-| Naive build — cold build time | |
-| Multi-stage build — image size | |
-| Multi-stage build — cold build time | |
-| Warm rebuild (one-line code change) | |
+| Naive build — image size | 1.01 GB |
+| Naive build — cold build time | ~100 s |
+| Multi-stage build — image size | 813 MB |
+| Multi-stage build — cold build time | ~100 s |
+| Warm rebuild (one-line code change) | ~52 s (CACHED confirmed) |
 | p99 — bare metal (Lab 2, no container) | 38 ms |
-| p99 — containerised | |
-| Time-to-ready (`scripts/startup_time.sh`) | |
+| p99 — containerised | N/A (hey tool install failed) |
+| Time-to-ready (`scripts/startup_time.sh`) | ~0-7 s (already warm) |
 
 ## Day 2 — Lab 4 (Tests)
 
