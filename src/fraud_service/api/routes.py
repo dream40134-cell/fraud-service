@@ -24,7 +24,7 @@ def get_scorer(request: Request) -> FraudScorer:
 
 @router.post("/predict", response_model=PredictResponse)
 def predict(body: PredictRequest, request: Request,
-            scorer: FraudScorer = Depends(get_scorer)):
+            scorer: FraudScorer = Depends(get_scorer)):  # noqa: B008
     result = scorer.score(body.to_domain())
     return PredictResponse(
         transaction_id=result["transaction_id"],
