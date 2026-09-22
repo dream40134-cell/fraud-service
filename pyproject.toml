@@ -26,6 +26,7 @@ dev = [
     "httpx>=0.27.0",
     "ruff>=0.6.0",
 ]
+
 # --- src-layout: package code lives under src/, tests import the
 # --- INSTALLED package (pip install -e .), never the repo folder.
 [tool.setuptools.packages.find]
@@ -33,6 +34,16 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = [
+    "unit: fast, pure-logic tests",
+    "integration: API tests via TestClient",
+    "behavioural: tests against the real model",
+    "slow: excluded from the per-commit gate",
+]
+addopts = "-q --strict-markers --cov=fraud_service --cov-branch --cov-report=term-missing"
+
+[tool.coverage.report]
+fail_under = 80
 
 [tool.ruff]
 line-length = 100
