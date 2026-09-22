@@ -41,3 +41,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: requirements.lock
+      - run: pip install -e ".[dev,api]"
+      - name: Fast suite — the per-commit gate
+        run: pytest -m "not slow" --cov-fail-under=80
