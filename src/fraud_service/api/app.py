@@ -4,6 +4,7 @@ trace to the client.
 """
 import time
 import uuid
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
@@ -15,11 +16,10 @@ from fraud_service.service.scorer import FraudScorer
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     settings = Settings()
     t0 = time.perf_counter()
     model = SklearnModel.load(settings.model_path)
-    # warm-up: pay lazy-init cost now, not on the first user request
     model.predict_proba({"amount_log": 0.0, "is_night": 0})
     print(f"model_loaded version={model.model_version} "
           f"seconds={time.perf_counter() - t0:.3f}")
@@ -27,7 +27,6 @@ async def lifespan(app: FastAPI):
     app.state.scorer = FraudScorer(model=model, block_threshold=settings.block_threshold)
     app.state.settings = settings
     yield
-    # teardown (nothing to close here yet)
 
 
 def create_app() -> FastAPI:
@@ -37,7 +36,7 @@ def create_app() -> FastAPI:
     app.include_router(router, prefix="/v1")
 
     @app.middleware("http")
-    async def trace_and_time(request: Request, call_next):
+    async def trace_and_time(request: Request, call_next):  # type: ignore[no-untyped-def]
         trace_id = request.headers.get("X-Trace-Id", uuid.uuid4().hex[:16])
         request.state.trace_id = trace_id
         t0 = time.perf_counter()
@@ -47,7 +46,7 @@ def create_app() -> FastAPI:
         return response
 
     @app.exception_handler(Exception)
-    async def unhandled(request: Request, exc: Exception):
+    async def unhandled(request: Request, exc: Exception) -> JSONResponse:
         trace_id = getattr(request.state, "trace_id", "unknown")
         return JSONResponse(status_code=500, content={"error": {
             "code": "INTERNAL_ERROR",
